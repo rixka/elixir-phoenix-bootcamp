@@ -15,10 +15,23 @@ defmodule Cards do
     end
   end
 
+  @doc """
+    Shuffling randomises a given `deck` of cards.
+  """
   def shuffle(deck) do
     Enum.shuffle(deck)
   end
 
+  @doc """
+    Determines whether a deck contains a given card.
+
+  ## Examples
+
+      iex> deck = Cards.create_deck
+      iex> Cards.contains?(deck, "Ace of Spades")
+      true
+
+  """
   def contains?(deck, card) do
     Enum.member?(deck, card)
   end
@@ -40,11 +53,21 @@ defmodule Cards do
     Enum.split(deck, hand_size)
   end
 
+  @doc """
+    Saves the the deck locally.
+    The `filename` argument indicates the local
+    file to save to..
+  """
   def save(deck, filename) do
     binary = :erlang.term_to_binary deck
     File.write(filename, binary)
   end
 
+  @doc """
+    Reads a local file and returns the deck.
+    The `filename` argument indactes the local
+    file to read.
+  """
   def load(filename) do
     case File.read(filename) do
       {:ok, binary} -> :erlang.binary_to_term binary
@@ -52,6 +75,11 @@ defmodule Cards do
     end
   end
 
+  @doc """
+    Defines a deck, shuffles the deck, and deals a hand.
+    The `hand_size` argument indicates how many cards should
+    be in the hand.
+  """
   def create_hand(hand_size) do
     Cards.create_deck
     |> Cards.shuffle(hand_size)
