@@ -8,7 +8,7 @@ mix.lock
 ###############
 # Directories #
 ###############
-/_build
-/cover
-/deps
-/doc
+**/_build
+**/cover
+**/deps
+**/doc
