@@ -14,7 +14,7 @@ defmodule Identicon do
     File.write("#{filename}.png", image)
   end
 
-  def draw_image(%Identicon.Image{colour: colour, pixel_map: pixel_map})do
+  def draw_image(%Identicon.Image{colour: colour, pixel_map: pixel_map}) do
     image = :egd.create(250, 250)
     fill = :egd.color(colour)
 
@@ -25,10 +25,12 @@ defmodule Identicon do
     :egd.render(image)
   end
 
-  def build_pixel_map(%Identicon.Image{grid: grid} = image) do
+  def build_pixel_map(image) do
+    %Identicon.Image{grid: grid} = image
+
     pixel_map = Enum.map grid, fn({_code, index}) ->
       horizontal = rem(index, 5) * 50
-      vertical = rem(index, 5) * 50
+      vertical = div(index, 5) * 50
 
       top_left = {horizontal, vertical}
       bottom_right = {horizontal + 50, vertical + 50}
@@ -39,7 +41,9 @@ defmodule Identicon do
     %Identicon.Image{image | pixel_map: pixel_map}
   end
 
-  def filter_odd_squares(%Identicon.Image{grid: grid} = image) do
+  def filter_odd_squares(image) do
+    %Identicon.Image{grid: grid} = image
+
     grid = Enum.filter grid, fn({code, _index}) ->
       rem(code, 2) == 0
     end
