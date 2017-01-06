@@ -10,10 +10,16 @@ defmodule Discuss.AuthController do
     user_params = %{token: auth.credentials.token, email: auth.info.email, provider: provider}
 
     changeset = User.changeset(%User{}, user_params)
-    signin(conn, changeset)
+    login(conn, changeset)
   end
 
-  defp signin(conn, changeset) do
+  def logout(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: topic_path(conn, :index))
+  end
+
+  defp login(conn, changeset) do
     case insert_or_update_user(changeset) do
       {:ok, user} -> 
         conn
